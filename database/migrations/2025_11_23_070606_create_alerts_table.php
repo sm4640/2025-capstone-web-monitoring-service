@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('severity');       // 심각도
             $table->string('instance');       // 발생 인스턴스
             $table->text('summary');          // 요약/상세
-
+            $table->text('callback_url');     // n8n wait노드 콜백 url
             $table->timestampTz('created_at')->useCurrent();
             $table->timestampTz('updated_at')->useCurrent()->useCurrentOnUpdate();
 
