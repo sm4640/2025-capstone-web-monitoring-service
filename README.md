@@ -1,59 +1,44 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Web-Monitoring-Service
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 프로젝트 개요
+ - 2025년 캡스톤 프로젝트 주제로 클라우드 인프라 장애 극복 AI 어시스턴트 플로우 구축을 하고 있다.
+ - 장애를 감지하고 AI가 해결책을 제공해주는 과정에서 관리자가 그 해결책을 받아들일지에 대한 여부를 체크하고 기록을 확인하는 웹 서비스를 구현하고자 한다.
 
-## About Laravel
+## 개발 스택
+ - 백엔드, 프론트엔드 -> PHP / DB -> Postgresql
+ - 웹 사이트의 디자인에 크게 신경쓰지 않고 완성도 있는 빠른 개발을 원하기 때문에 HTML 코드에 통합이 빠른 PHP를 활용하였다.
+ - 로그 내용 부분의 수행 계획과 결과 부분이 복잡하기 때문에 복잡하고 구조화된 데이터 유형을 다루기 편리한 Postgresql을 활용하였다.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 데이터베이스 구조
+ - 유저
+  - id(디폴트 순차 증가)
+  - password
+  - name
+  - created_at
+  - updated_at
+ - 알람 내용
+  - id(디폴트 순차 증가)
+  - name
+  - severity
+  - instance
+  - summary
+  - create_at
+  - updated_at
+  - status
+ - 로그 내용 → 한 알람에 여러 개 로그를 정렬할 때는 created_at으로
+  - id(디폴트 순차 증가)
+  - alert_id
+  - feedback
+  - plan
+  - result
+  - create_at
+  - updated_at
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 기능 목록
+ - 안 본 알람 목록 조회
+ - 수행 중 알람 목록 조회
+ - 수행된 알람 목록 조회
+ - 안 본 알람 상세 조회
+ - 수락/거절 + 피드백 기능
+ - 수행중 알람 상세 조회
+ - 수행된 알람 상세 조회
