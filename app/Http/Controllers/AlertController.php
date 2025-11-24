@@ -24,4 +24,18 @@ class AlertController extends Controller
 
         return view('alerts.index', compact('unseen', 'inProgress', 'done'));
     }
+
+    public function show(int $id)
+    {
+        $alert = Alert::with('logs')->findOrFail($id);
+
+        $latestPlan = $alert->logs()
+            ->whereNotNull('plan')
+            ->orderByDesc('created_at')
+            ->first();
+
+        $logs = $alert->logs()->orderBy('created_at')->get();
+
+        return view('alerts.show', compact('alert', 'latestPlan', 'logs'));
+    }
 }
