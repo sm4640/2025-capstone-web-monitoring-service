@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('id', 50)->primary();
             $table->string('password');
             $table->string('name', 100);
-            $table->timestampTz('create_at')->useCurrent();
+            $table->timestampTz('created_at')->useCurrent();
             $table->timestampTz('updated_at')->useCurrent()->useCurrentOnUpdate();
             
         });

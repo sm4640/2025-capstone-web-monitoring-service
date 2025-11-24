@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('plan')->nullable();
             $table->text('result')->nullable();
 
-            $table->timestampTz('create_at')->useCurrent();
+            $table->timestampTz('created_at')->useCurrent();
             $table->timestampTz('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->foreign('alert_id')

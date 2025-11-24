@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('instance');       // 발생 인스턴스
             $table->text('summary');          // 요약/상세
 
-            $table->timestampTz('create_at')->useCurrent();
+            $table->timestampTz('created_at')->useCurrent();
             $table->timestampTz('updated_at')->useCurrent()->useCurrentOnUpdate();
 
             $table->string('status')->default('unseen'); 
