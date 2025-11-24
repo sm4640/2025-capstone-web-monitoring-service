@@ -11,28 +11,28 @@
 
 ## 데이터베이스 구조
  - 유저
-  - id(디폴트 순차 증가)
-  - password
-  - name
-  - created_at
-  - updated_at
+   - id(디폴트 순차 증가)
+   - password
+   - name
+   - created_at
+   - updated_at
  - 알람 내용
-  - id(디폴트 순차 증가)
-  - name
-  - severity
-  - instance
-  - summary
-  - create_at
-  - updated_at
-  - status
+   - id(디폴트 순차 증가)
+   - name
+   - severity
+   - instance
+   - summary
+   - create_at
+   - updated_at
+   - status
  - 로그 내용 → 한 알람에 여러 개 로그를 정렬할 때는 created_at으로
-  - id(디폴트 순차 증가)
-  - alert_id
-  - feedback
-  - plan
-  - result
-  - create_at
-  - updated_at
+   - id(디폴트 순차 증가)
+   - alert_id
+   - feedback
+   - plan
+   - result
+   - create_at
+   - updated_at
 
 ## 기능 목록
  - 안 본 알람 목록 조회
