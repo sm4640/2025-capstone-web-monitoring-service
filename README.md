@@ -22,6 +22,7 @@
    - severity
    - instance
    - summary
+   - callback_url
    - create_at
    - updated_at
    - status
@@ -42,3 +43,7 @@
  - 수락/거절 + 피드백 기능
  - 수행중 알람 상세 조회
  - 수행된 알람 상세 조회
+ - 문제 상황과 해결 방법이 post로 들어옴 → 바로 저장
+   - 문제 상황의 id(알람)가 있을 경우 해결 방법을 이미 존재하는 alert에 연결
+ - auto action module의 조치 결과가 post로 들어옴
+   - 저장 및 status → done
