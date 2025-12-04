@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('feedback')->nullable();
             $table->text('plan')->nullable();
             $table->text('result')->nullable();
+            $table->boolean('is_approve')->nullable();
 
             $table->timestampTz('created_at')->useCurrent();
             $table->timestampTz('updated_at')->useCurrent()->useCurrentOnUpdate();
