@@ -157,10 +157,23 @@
         <button type="submit" name="decision" value="rejected" class="btn">거절</button>
         <input type="text" name="feedback" class="feedback-input"
                placeholder="거절 시 피드백 입력 필수">
+
+        <button type="button" id="verify-plan-btn" class="btn">검증</button>
+        <span id="verify-plan-result" style="margin-left:10px; font-weight:bold;"></span>
+
         @error('feedback')
             <div class="error">{{ $message }}</div>
         @enderror
     </form>
+
+    <div style="margin-top:8px; font-size:12px; color:#555;">
+    검증은 최대 10분 정도 소요될 수 있으며, 페이지를 새로고침하면 검증 결과가 사라집니다.
+    </div>
+
+    <button type="button" id="verify-plan-toggle" class="btn" style="display:none; margin-top:10px;">
+        자세히
+    </button>
+    <div id="verify-plan-detail" class="box" style="display:none; max-width:600px; margin-top:8px;"></div>
 
 @elseif($alert->status === 'in_progress')
     {{-- 4페이지 --}}
@@ -237,6 +250,111 @@
         @endif
     @endforeach
 @endif
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const btn        = document.getElementById('verify-plan-btn');
+    const resultSpan = document.getElementById('verify-plan-result');
+    const toggleBtn  = document.getElementById('verify-plan-toggle');
+    const detailBox  = document.getElementById('verify-plan-detail');
+
+    if (!btn || !resultSpan) {
+        return;
+    }
+
+    // HTML escape helper
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // 토글 버튼 클릭 시 상세 박스 열고 닫기
+    if (toggleBtn && detailBox) {
+        toggleBtn.addEventListener('click', function () {
+            const visible = detailBox.style.display !== 'none';
+            detailBox.style.display = visible ? 'none' : 'block';
+            toggleBtn.textContent = visible ? '자세히' : '닫기';
+        });
+    }
+
+    btn.addEventListener('click', async function () {
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        // 검증 중 표시 + 최대 10분 안내
+        btn.textContent = '검증 중... (최대 10분 소요)';
+        resultSpan.textContent = '';
+
+        // 이전 상세 결과 숨기기
+        if (toggleBtn && detailBox) {
+            toggleBtn.style.display = 'none';
+            detailBox.style.display = 'none';
+            detailBox.innerHTML = '';
+            toggleBtn.textContent = '자세히';
+        }
+
+        try {
+            const res = await fetch('{{ route('api.alerts.verify-plan', $alert->id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({})
+            });
+
+            if (!res.ok) {
+                throw new Error('HTTP ' + res.status);
+            }
+
+            const data = await res.json();
+
+            // 한 줄 요약
+            let prefix = '';
+            if (data.verdict === 'good') {
+                prefix = 'OK: ';
+            } else if (data.verdict === 'bad') {
+                prefix = 'NOT OK: ';
+            } else {
+                prefix = 'UNCERTAIN: ';
+            }
+
+            resultSpan.textContent = prefix + (data.short_comment || '');
+
+            // 상세 정보 박스 내용 구성 (verdict, score, reason 등)
+            if (toggleBtn && detailBox) {
+                let html = '<strong>Verification Details</strong><br><br>';
+                html += '<div><strong>Verdict:</strong> ' + (escapeHtml(data.verdict) || '-') + '</div>';
+
+                if (typeof data.score === 'number') {
+                    html += '<div><strong>Confidence score:</strong> ' + data.score.toFixed(2) + '</div>';
+                }
+
+                if (data.reason) {
+                    html += '<div style="margin-top:8px;"><strong>Reason:</strong><br>' +
+                        escapeHtml(data.reason).replace(/\n/g, '<br>') +
+                        '</div>';
+                }
+
+                detailBox.innerHTML = html;
+                toggleBtn.style.display = 'inline-block'; // 토글 버튼 보이게
+            }
+        } catch (e) {
+            console.error(e);
+            resultSpan.textContent = 'Verification failed. Please try again.';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    });
+});
+</script>
+
 
 </body>
 </html>
