@@ -130,14 +130,16 @@ class AlertController extends Controller
                 }
 
                 if (!empty($alert->callback_url)) {
-                    Http::timeout(5)->post($alert->callback_url, $payload);
+                    $base = $alert->callback_url;
+                    $url = $base . '/wms-approval';
+                    Http::timeout(5)->post($url, $payload);
                 }
             });
 
         } catch (\Throwable $e) {
             Log::error('Alert decision transaction failed', [
                 'alert_id' => $alert->id,
-                'url'      => $alert->callback_url ?? null,
+                'url'      => $url ?? null,
                 'payload'  => $payload,
                 'error'    => $e->getMessage(),
             ]);
