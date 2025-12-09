@@ -28,6 +28,11 @@
         }
         a.back { display:inline-block; margin-bottom:15px; }
         .error { color:red; margin-top:10px; }
+        pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -57,6 +62,28 @@
     <strong>알람 상세 내용</strong><br><br>
     {!! nl2br(e($alert->summary)) !!}
 </div>
+
+@php
+    $labels = $alert->labels ?? [];
+    $annotations = $alert->annotations ?? [];
+@endphp
+
+@if(!empty($labels) || !empty($annotations))
+    <div class="box">
+        <strong>원본 Alert Labels / Annotations</strong><br><br>
+
+        @if(!empty($labels))
+            <div><strong>Labels</strong></div>
+            <pre>{{ json_encode($labels, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+            <br>
+        @endif
+
+        @if(!empty($annotations))
+            <div><strong>Annotations</strong></div>
+            <pre>{{ json_encode($annotations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) }}</pre>
+        @endif
+    </div>
+@endif
 
 @if($alert->status === 'unseen')
     {{-- 3페이지 --}}

@@ -87,7 +87,7 @@ class AlertController extends Controller
                 $planData = null;
                 if ($latestPlanLog && !empty($latestPlanLog->plan)) {
                     $decoded = json_decode($latestPlanLog->plan, true);
-                    // JSON이 정상일 때만 배열로, 아니면 null 또는 원문 그대로 보낼지 선택
+                    // JSON이 정상일 때만 배열로
                     $planData = (json_last_error() === JSON_ERROR_NONE) ? $decoded : null;
                 }
 
@@ -96,11 +96,13 @@ class AlertController extends Controller
                     : now('UTC')->toIso8601String();
 
                 $alertinfo = [
-                    'id'        => $alert->id,
-                    'name'      => $alert->name,
-                    'severity'  => $alert->severity,
-                    'instance'  => $alert->instance,
-                    'summary'   => $alert->summary,
+                    'id'          => $alert->id,
+                    'name'        => $alert->name,
+                    'severity'    => $alert->severity,
+                    'instance'    => $alert->instance,
+                    'summary'     => $alert->summary,
+                    'labels'      => $alert->labels ?? null,
+                    'annotations' => $alert->annotations ?? null,
                 ];
 
                 if ($data['decision'] === 'approved') {

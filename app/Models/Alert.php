@@ -13,8 +13,14 @@ class Alert extends Model
     const UPDATED_AT = 'updated_at';
 
     protected $fillable = [
-        'name', 'severity', 'instance', 'summary', 'callback_url', 'status',
+        'name', 'severity', 'instance', 'summary', 'callback_url', 'status', 'labels', 'annotations',
     ];
+
+    protected $casts = [
+        'labels'      => 'array',
+        'annotations' => 'array',
+    ];
+
 
     public function logs()
     {

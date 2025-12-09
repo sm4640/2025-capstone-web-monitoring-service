@@ -18,22 +18,28 @@ class AlertApiController extends Controller
             'alert.severity'        => 'required|string',
             'alert.instance'        => 'required|string',
             'alert.summary'         => 'required|string',
+            'alert.labels'          => 'nullable|array',
+            'alert.annotations'     => 'nullable|array',
 
             'feedback'              => 'nullable|string',
             'plan'                  => 'required|array',
             'callbackUrl'           => 'required|url',
         ]);
 
-        $alertInput = $data['alert'];
+        $alertInput   = $data['alert'];
+        $labels       = $alertInput['labels'] ?? null;
+        $annotations  = $alertInput['annotations'] ?? null;
 
         if (!empty($alertInput['id'])) {
             $alert = Alert::findOrFail($alertInput['id']);
 
-            $alert->name        = $alertInput['name'];
-            $alert->severity    = $alertInput['severity'];
-            $alert->instance    = $alertInput['instance'];
-            $alert->summary     = $alertInput['summary'];
+            $alert->name         = $alertInput['name'];
+            $alert->severity     = $alertInput['severity'];
+            $alert->instance     = $alertInput['instance'];
+            $alert->summary      = $alertInput['summary'];
             $alert->callback_url = $data['callbackUrl'];
+            $alert->labels       = $labels;
+            $alert->annotations  = $annotations;
             $alert->save();
         } else {
             $alert = Alert::create([
@@ -42,6 +48,8 @@ class AlertApiController extends Controller
                 'instance'    => $alertInput['instance'],
                 'summary'     => $alertInput['summary'],
                 'callback_url' => $data['callbackUrl'],
+                'labels'       => $labels,
+                'annotations'  => $annotations,
             ]);
         }
 
